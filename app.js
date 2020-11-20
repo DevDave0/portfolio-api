@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const sendGrid = require('@sendgrid/mail');
+const sendGrid = require('@sendGrid/mail');
 
 
 const app = express();
@@ -21,6 +21,36 @@ app.use((request, response, next) => {
 
 app.get('/api', (req, res, next) => {
     res.send('API Status: Running')
+});
+
+app.post('/api/email', (req, res, next) => {
+
+    console.log(req.body);
+
+    sendGrid.setApiKey('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');
+    const msg = {
+        to: 'dbchung24@gmail.com',
+        from: req.body.email,
+        subject: 'Website Contact',
+        text: req.body.message
+    }
+
+    sendGrid.send(msg)
+        .then(result => {
+
+            res.status(200).json({
+                success: true
+            });
+
+        })
+        .catch(err => {
+
+            console.log('error: ', err);
+            res.status(401).json({
+                success: false
+            });
+
+        });
 });
 
 app.listen(3030, '0.0.0.0');
