@@ -27,7 +27,7 @@ app.post('/api/email', (req, res, next) => {
 
     console.log(req.body);
 
-    sendGrid.setApiKey('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');
+    sendGrid.setApiKey();
     const msg = {
         to: 'dbchung24@gmail.com',
         from: req.body.email,
